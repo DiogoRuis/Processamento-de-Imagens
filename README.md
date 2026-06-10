@@ -1,49 +1,49 @@
-# 🖼️ Processamento de Imagens — Tarefa Avaliativa 1 PARTE 2
+# Processamento de Imagens — Tarefa Avaliativa 1 PARTE 2
 
-> Implementação de técnicas de pré-processamento de imagens em Python.
+Implementação de técnicas de pré-processamento de imagens em Python.
 
-**Aluno:** Diogo Ruis  
+**Alunos:** Diogo Ruis, Marcos Henrique  
 **Disciplina:** Processamento de Imagens / Visão Computacional
 
 ---
 
-## 📋 O que o programa faz
+## O que o programa faz
 
 Um único programa (`processamento_imagens.py`), acionado por menu, implementa 4 funcionalidades:
 
 ### 1) Tons de cinza com Clusterização
 Converte a imagem para tons de cinza e agrupa os tons a cada 4 níveis.  
-> Exemplo: 256 tons → no máximo 64 tons distintos.
+Exemplo: 256 tons resultam em no máximo 64 tons distintos.
 
 ### 2) Subtração de imagens — Detecção do corpo
 Subtrai a imagem do fundo (parede) da imagem com a pessoa, binariza por um limiar empírico e desenha um **retângulo vermelho** sobre o corpo detectado.  
 No modo gráfico há um slider para ajustar o limiar ao vivo.
 
-### 3) Filtro High-Boost (implementação própria) × Filtro Passa-Alta
+### 3) Filtro High-Boost (implementação própria) x Filtro Passa-Alta
 Implementação própria do filtro high-boost:
 ```
 high_boost = imagem + A * (imagem - suavizada)
 ```
-Comparado com o filtro passa-alta clássico (laplaciano 3×3). Slider para variar o fator A.
+Comparado com o filtro passa-alta clássico (laplaciano 3x3). Slider para variar o fator A.
 
 ### 4) Teorema da Convolução — Ganho computacional
 Aplica o mesmo filtro por convolução no **domínio espacial** e por multiplicação no **domínio da frequência (FFT)**, exibindo os dois tempos e a aceleração obtida.
 
 ---
 
-## ⚙️ Requisitos
+## Requisitos
 
 - Python 3.9 ou superior
 - Bibliotecas: `opencv-python`, `numpy`, `scipy`, `matplotlib`
 
-Instale com:
+Instalação:
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## ▶️ Como executar
+## Como executar
 
 ```bash
 python processamento_imagens.py
@@ -59,7 +59,7 @@ python processamento_imagens.py 4
 
 ---
 
-## 🖼️ Usando suas próprias imagens
+## Usando suas próprias imagens
 
 | Exercício | Arquivo esperado | Observação |
 |-----------|-----------------|------------|
@@ -68,7 +68,7 @@ python processamento_imagens.py 4
 
 ---
 
-## 📦 Gerando o executável
+## Gerando o executável
 
 ```bash
 pip install pyinstaller
@@ -79,13 +79,13 @@ O executável será criado em `dist/processamento_imagens.exe` (Windows).
 
 ---
 
-## 📁 Arquivos do projeto
+## Arquivos do projeto
 
 ```
-📦 projeto
- ┣ 📜 processamento_imagens.py   ← código-fonte principal
- ┣ 📜 requirements.txt           ← dependências
- ┣ 📜 README.md                  ← este arquivo
- ┣ 📁 resultados/                ← imagens geradas ao executar
- ┗ 📁 dist/                      ← executável gerado pelo PyInstaller
+projeto/
+├── processamento_imagens.py   — código-fonte principal
+├── requirements.txt           — dependências
+├── README.md                  — este arquivo
+├── resultados/                — imagens geradas ao executar
+└── dist/                      — executável gerado pelo PyInstaller
 ```
