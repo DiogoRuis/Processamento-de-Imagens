@@ -3,8 +3,8 @@
 ============================================================================
  TRABALHO DE PROCESSAMENTO DE IMAGENS / VISAO COMPUTACIONAL
 ============================================================================
- Aluno(a): ___________________________________
- Disciplina: _________________________________
+ Alunos: Diogo Ruis, Marcos Henrique
+ Disciplina: Processamento de Imagens
 
  Programa unico (acionado por menu) que implementa 4 funcionalidades:
 
@@ -181,7 +181,8 @@ def _carregar_par(caminho, papel):
 
 def exercicio2_subtracao(caminho_fundo="fundo.jpg",
                          caminho_pessoa="pessoa.jpg",
-                         limiar_inicial=48,
+                         limiar_inicial=25,
+                         margem_pct=0.02,
                          sujeito_mais_escuro=True):
     """Subtrai as duas imagens, binariza por limiar empirico e desenha um
     retangulo VERMELHO sobre o corpo detectado.
@@ -219,29 +220,34 @@ def exercicio2_subtracao(caminho_fundo="fundo.jpg",
 
     def processar(limiar):
         """Binariza, limpa ruido (morfologia) e devolve
-        (binaria, imagem_com_retangulo). Usa o MAIOR componente conectado como
-        sendo o corpo, ignorando pequenos ruidos residuais."""
+        (binaria, imagem_com_retangulo).
+
+        A caixa engloba TODO o primeiro plano detectado (e nao apenas o maior
+        componente), porque as maos (pele) tem pouca diferenca em relacao a
+        parede e costumam ficar como pequenos blocos desconectados dos bracos.
+        Como a subtracao com sinal deixa o fundo limpo, usar todo o primeiro
+        plano (apos a abertura remover ruidos) garante o corpo inteiro dentro
+        da caixa."""
         _, binaria = cv2.threshold(diff, limiar, 255, cv2.THRESH_BINARY)
         # Abertura: remove pontos isolados / ruido fino.
         binaria = cv2.morphologyEx(binaria, cv2.MORPH_OPEN,
                                    np.ones((5, 5), np.uint8), iterations=1)
-        # Fechamento vertical: religa a cabeca ao tronco (o rosto costuma ter
-        # pouca diferenca e "corta" a silhueta).
+        # Fechamento: preenche pequenos buracos internos (silhueta mais limpa).
         binaria = cv2.morphologyEx(binaria, cv2.MORPH_CLOSE,
-                                   cv2.getStructuringElement(cv2.MORPH_RECT, (5, 35)),
-                                   iterations=2)
-        # Fechamento geral: preenche buracos internos do corpo.
-        binaria = cv2.morphologyEx(binaria, cv2.MORPH_CLOSE,
-                                   np.ones((15, 15), np.uint8), iterations=2)
+                                   np.ones((7, 7), np.uint8), iterations=2)
 
         resultado = pessoa.copy()
-        contornos, _ = cv2.findContours(binaria, cv2.RETR_EXTERNAL,
-                                        cv2.CHAIN_APPROX_SIMPLE)
-        if contornos:
-            maior = max(contornos, key=cv2.contourArea)   # o corpo
-            x, y, w, h = cv2.boundingRect(maior)
+        H_img, W_img = resultado.shape[:2]
+        ys, xs = np.where(binaria > 0)
+        if xs.size:
+            x, y = int(xs.min()), int(ys.min())
+            x_max, y_max = int(xs.max()), int(ys.max())
+            # Margem de seguranca (recortada aos limites da imagem).
+            m = int(margem_pct * max(H_img, W_img))
+            x0, y0 = max(0, x - m), max(0, y - m)
+            x1, y1 = min(W_img - 1, x_max + m), min(H_img - 1, y_max + m)
             # Retangulo vermelho (BGR = 0, 0, 255).
-            cv2.rectangle(resultado, (x, y), (x + w, y + h), (0, 0, 255), 5)
+            cv2.rectangle(resultado, (x0, y0), (x1, y1), (0, 0, 255), 5)
         return binaria, resultado
 
     estado = {"limiar": limiar_inicial}
