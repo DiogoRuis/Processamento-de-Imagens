@@ -3,7 +3,7 @@
 Implementação de técnicas de pré-processamento de imagens em Python.
 
 **Alunos:** Diogo Ruis, Marcos Henrique  
-**Disciplina:** Processamento de Imagens / Visão Computacional
+**Disciplina:** Visão Computacional
 
 ---
 
