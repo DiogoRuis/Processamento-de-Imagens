@@ -187,15 +187,11 @@ def exercicio2_subtracao(caminho_fundo="fundo.jpg",
     """Subtrai as duas imagens, binariza por limiar empirico e desenha um
     retangulo VERMELHO sobre o corpo detectado.
 
-    Coloque suas fotos como 'fundo.jpg' (so a parede) e 'pessoa.jpg' (voce de
-    bracos abertos). No modo interativo, ajuste o limiar pelo slider.
-
     Subtracao COM SINAL: como normalmente o corpo (roupa) e MAIS ESCURO que a
     parede, usamos (fundo - pessoa). Isso realca o que ESCURECEU (voce) e
     descarta o que CLAREOU na cena (diferenca de iluminacao entre as fotos, ou
-    uma sombra que sumiu do fundo) - bem mais robusto que o modulo |a - b|.
-    Se voce estiver de roupa CLARA sobre fundo escuro, chame com
-    sujeito_mais_escuro=False (passa a calcular pessoa - fundo)."""
+    uma sombra que sumiu do fundo) - bem mais robusto que o modulo |a - b|."""
+                          
     print("\n----- EXERCICIO 2: subtracao de imagens e deteccao do corpo -----")
     fundo = _carregar_par(caminho_fundo, "fundo")
     pessoa = _carregar_par(caminho_pessoa, "pessoa")
